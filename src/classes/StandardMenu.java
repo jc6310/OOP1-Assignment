@@ -7,7 +7,7 @@ public class StandardMenu implements Menu {
     private final ArrayList<MenuItem> menu;
 
     public StandardMenu(ArrayList<MenuItem> menu) {
-        this.menu = menu;
+        this.menu = menu; 
     }
 
     @Override
