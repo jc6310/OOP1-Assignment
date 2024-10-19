@@ -35,4 +35,6 @@ abstract class Employee {
     public double totalEmployeeWage(double time) {
         return time * getWage();
     }
+
+    public abstract String displayAllEmployeeDetails();
 }

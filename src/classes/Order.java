@@ -18,6 +18,10 @@ public class Order {
         return price;
     }
 
+    public String getItemName() {
+        return itemName;
+    }
+
     public int getOrderNo() {
         return orderNo;
     }

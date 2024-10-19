@@ -20,9 +20,12 @@ public class Manager extends Employee{
         return title;
     }
 
+    public String displayAllEmployeeDetails(){
+        return getId() +" : " +getName() + " who's pay rate is "+ getWage();
+    }
+
     public String displayGeneralManagerDetails() {
         // [4] super refers to parent class
         return title +" Manager: "+ super.displayEmployeeDetails();
     }
-
 }

@@ -12,4 +12,8 @@ public class Waiter extends Employee{
     public boolean isAllowedServiceAlcohol() {
         return isAllowedServiceAlcohol;
     }
+
+    public String displayAllEmployeeDetails(){
+        return getId() +" : " +getName() + " who's pay rate is "+ getWage();
+    }
 }

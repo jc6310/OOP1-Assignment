@@ -6,9 +6,10 @@ public class Main {
     public static void main(String[] args) {
 
         // [8] Example Of StringBuilder
-        StringBuilder resTitle = new StringBuilder("Whatever Restaurant");
+        StringBuilder resTitle = new StringBuilder("Whatever Takeaway Restaurant");
         resTitle.insert(0, "Local ");
         System.out.println(resTitle);
+
         //Build Kids Menu
         var kidMenuItem = new ArrayList<MenuItem>();
         kidMenuItem =  buildMenu(String.valueOf(MenuType.KIDS));
@@ -56,8 +57,13 @@ public class Main {
         LocalDateTime purchaseTime = LocalDateTime.now();
 
         Customer CustomerOne = new Customer(orderItems, "DCX5682117", purchaseTime);
-        CustomerOne.getBill();
-        System.out.println(CustomerOne.getBill());
+        CustomerOne.getBillTotal();
+        System.out.println("Order Status:" +CustomerOne.getOrderStatus());
+        System.out.println("Please pay, cost of order " +CustomerOne.getBillTotal());
+        // [A1] Call-by-value
+        CustomerOne.updateOrderStatus("Order Ready");
+        System.out.println("Order: " + CustomerOne.getCustomerOrder() +" Status: "+ CustomerOne.getOrderStatus());
+        CustomerOne.getOrder();
     }
 
     private static ArrayList<MenuItem> buildMenu(String menuType) {
