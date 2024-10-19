@@ -1,10 +1,12 @@
 package classes;
 
+// [2] Encapsulation example where data is hidden that can be used via get/setters
 public class Manager extends Employee{
 
     private String title;
 
     public Manager(double pay, String name, int id) {
+        // [4] Super() Invoking the parent class constructor
         super(pay, name, id);
     }
 
@@ -19,6 +21,7 @@ public class Manager extends Employee{
     }
 
     public String displayGeneralManagerDetails() {
+        // [4] super refers to parent class
         return title +" Manager: "+ super.displayEmployeeDetails();
     }
 

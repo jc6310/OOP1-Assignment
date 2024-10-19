@@ -2,9 +2,9 @@ package classes;
 
 abstract class Employee {
 
-    int id;
-    String name;
-    double wage;
+    private final int id;
+    private final String name;
+    private final double wage;
 
     public Employee(double wage, String name, int id) {
         this.wage = wage;

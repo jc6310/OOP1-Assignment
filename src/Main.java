@@ -1,28 +1,30 @@
 import classes.*;
-
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Setup Restaurant ");
 
+        // [8] Example Of StringBuilder
+        StringBuilder resTitle = new StringBuilder("Whatever Restaurant");
+        resTitle.insert(0, "Local ");
+        System.out.println(resTitle);
         //Build Kids Menu
         var kidMenuItem = new ArrayList<MenuItem>();
-        kidMenuItem =  buildMenu("kids");
-
+        kidMenuItem =  buildMenu(String.valueOf(MenuType.KIDS));
         KidsMenu kidsMenu = new KidsMenu(kidMenuItem);
         kidsMenu.displayMenu();
 
         //Build Vegan Menu
         var veganMenuItem = new ArrayList<MenuItem>();
-        veganMenuItem =  buildMenu("vegan");
-
+        veganMenuItem =  buildMenu(String.valueOf(MenuType.VEGAN));
+        // [4] Polymorphism example
         VeganMenu veganMenu = new VeganMenu(veganMenuItem);
         veganMenu.displayMenu();
 
         //Build standard Menu
         var standardMenuItem = new ArrayList<MenuItem>();
-        standardMenuItem =  buildMenu("standard");
+        standardMenuItem =  buildMenu(String.valueOf(MenuType.STANDARD));
 
         StandardMenu standardMenu = new StandardMenu(standardMenuItem);
         standardMenu.displayMenu();
@@ -42,30 +44,50 @@ public class Main {
         showEmployeeWorking(waiter, waiter1);  // Varargs
         showEmployeeWorking(manager);
 
+        Order orderOne = new Order("Chicken And Chips", 52, 13.99);
+        Order orderTwo = new Order("Chips With Taco", 32, 8.99);
+
+        // [7] example of arraylist
+        var orderItems = new ArrayList<Order>();
+        orderItems.add(orderOne);
+        orderItems.add(orderTwo);
+
+        // [8] Example Of date api
+        LocalDateTime purchaseTime = LocalDateTime.now();
+
+        Customer CustomerOne = new Customer(orderItems, "DCX5682117", purchaseTime);
+        CustomerOne.getBill();
+        System.out.println(CustomerOne.getBill());
     }
 
     private static ArrayList<MenuItem> buildMenu(String menuType) {
         //[01] example of LVTI
         var menu_items = new ArrayList<MenuItem>();
+        String[] titles = new String[4];
+        titles[0] = "Burger";
+        titles[1] = "Chips";
+        titles[2] = "Sausage";
+        titles[3] = "Chicken";
 
         switch (menuType) {
-            case "kids":
-                menu_items.add(new MenuItem(1, "Burger", 5.99));
-                menu_items.add(new MenuItem(2, "Chips", 3.99));
-                menu_items.add(new MenuItem(3, "Sausage", 2.99));
-                menu_items.add(new MenuItem(4, "Chicken Nuggets", 2.99));
+            case "KIDS":
+                menu_items.add(new MenuItem(1, titles[0], 5.99));
+                menu_items.add(new MenuItem(2, titles[1], 3.99));
+                menu_items.add(new MenuItem(3,  titles[2], 2.99));
+                menu_items.add(new MenuItem(4, titles[3] +" Nuggets", 2.99));
                 break;
-            case "vegan":
-                menu_items.add(new MenuItem(1, "Vegan Burger", 12.99));
-                menu_items.add(new MenuItem(2, "Chips With Taco", 8.99));
-                menu_items.add(new MenuItem(3, "Veg salad soup", 6.99));
-                menu_items.add(new MenuItem(4, "Potato Nuggets", 9.99));
+            case "VEGAN":
+                menu_items.add(new MenuItem(31, "Vegan "+ titles[0], 12.99));
+                menu_items.add(new MenuItem(32, titles[1] +" With Taco", 8.99));
+                menu_items.add(new MenuItem(33, "Veg salad soup", 6.99));
+                menu_items.add(new MenuItem(34, "Potato Nuggets", 9.99));
                 break;
             default:
-                menu_items.add(new MenuItem(1, "Burger And Chips", 15.99));
-                menu_items.add(new MenuItem(2, "Chicken And Chips", 13.99));
-                menu_items.add(new MenuItem(3, "Sausages And Mashed Potatoes", 16.99));
-                menu_items.add(new MenuItem(4, "Chicken Brest And Potatoes", 14.99));
+
+                menu_items.add(new MenuItem(51, titles[1] +" And "+ titles[0], 15.99));
+                menu_items.add(new MenuItem(52, titles[3] +" And "+ titles[1], 13.99));
+                menu_items.add(new MenuItem(53, titles[2] +" And Mashed Potatoes", 16.99));
+                menu_items.add(new MenuItem(54, "Chicken Brest And Potatoes", 14.99));
         }
         return menu_items;
     }

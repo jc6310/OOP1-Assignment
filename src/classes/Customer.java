@@ -1,15 +1,18 @@
 package classes;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class Customer {
 
     private final ArrayList<Order> order;
     String customerOrder;
+    LocalDateTime orderTime;
 
-    public Customer(ArrayList<Order> order, String customerOrder) {
+    public Customer(ArrayList<Order> order, String customerOrder, LocalDateTime orderTime) {
         this.order = order;
-        this.customerOrder =  customerOrder;
+        this.customerOrder = customerOrder;
+        this.orderTime = orderTime;
     }
 
     public ArrayList<Order> getOrder() {
@@ -21,6 +24,11 @@ public class Customer {
     }
 
     public double getBill() {
-        return order.getFirst().getbill();
+        double totalPrice = 0;
+        for (Order itemPrice : this.order)
+        {
+            totalPrice += itemPrice.getPrice();
+        }
+        return totalPrice;
     }
 }
