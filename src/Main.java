@@ -45,6 +45,8 @@ public class Main {
         showEmployeeWorking(waiter, waiter1);  // Varargs
         showEmployeeWorking(manager);
 
+
+        greetingsMessage("greeting",waiter.getName());
         Order orderOne = new Order("Chicken And Chips", 52, 13.99);
         Order orderTwo = new Order("Chips With Taco", 32, 8.99);
 
@@ -57,6 +59,7 @@ public class Main {
         LocalDateTime purchaseTime = LocalDateTime.now();
 
         Customer CustomerOne = new Customer(orderItems, "DCX5682117", purchaseTime);
+        greetingsMessage("cost", String.valueOf(CustomerOne.getBillTotal()));
         CustomerOne.getBillTotal();
         System.out.println("Order Status:" +CustomerOne.getOrderStatus());
         System.out.println("Please pay, cost of order " +CustomerOne.getBillTotal());
@@ -64,6 +67,7 @@ public class Main {
         CustomerOne.updateOrderStatus("Order Ready");
         System.out.println("Order: " + CustomerOne.getCustomerOrder() +" Status: "+ CustomerOne.getOrderStatus());
         CustomerOne.getOrder();
+        greetingsMessage("bye", "");
     }
 
     private static ArrayList<MenuItem> buildMenu(String menuType) {
@@ -89,13 +93,21 @@ public class Main {
                 menu_items.add(new MenuItem(34, "Potato Nuggets", 9.99));
                 break;
             default:
-
                 menu_items.add(new MenuItem(51, titles[1] +" And "+ titles[0], 15.99));
                 menu_items.add(new MenuItem(52, titles[3] +" And "+ titles[1], 13.99));
                 menu_items.add(new MenuItem(53, titles[2] +" And Mashed Potatoes", 16.99));
                 menu_items.add(new MenuItem(54, "Chicken Brest And Potatoes", 14.99));
         }
         return menu_items;
+    }
+    // [A6] Switch expressions with pattern matching.
+    private static void greetingsMessage(String type, String message){
+        switch (type) {
+            case "greeting" -> System.out.println("Hi my name is " + message +" What u want to order?");
+            case "cost" -> System.out.println("ur order will cost" + message);
+            case "bye" -> System.out.println("Bye please come again");
+            default -> System.out.println("Can u say that again");
+        }
     }
 
     // [01] example of Varargs and method overload
