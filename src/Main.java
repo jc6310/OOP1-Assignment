@@ -30,6 +30,10 @@ public class Main {
         StandardMenu standardMenu = new StandardMenu(standardMenuItem);
         standardMenu.displayMenu();
 
+        // [A2] Private, default and static interface methods.
+        Menu specialMenu = Menu.createMenu();
+        specialMenu.isSpecialMenu("Special");
+
         //create waiters and staff
         Waiter waiter = new Waiter(14.04, "Raul", 101, true);
         Waiter waiter1 = new Waiter(11.04, "Johnny", 99, false);
@@ -44,7 +48,6 @@ public class Main {
 
         showEmployeeWorking(waiter, waiter1);  // Varargs
         showEmployeeWorking(manager);
-
 
         greetingsMessage("greeting",waiter.getName());
         Order orderOne = new Order("Chicken And Chips", 52, 13.99);
