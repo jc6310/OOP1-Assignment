@@ -2,7 +2,7 @@ package classes;
 
 import java.util.ArrayList;
 
-public class KidsMenu implements Menu {
+public final class KidsMenu implements Menu {
 
     private final ArrayList<MenuItem> menu;
 

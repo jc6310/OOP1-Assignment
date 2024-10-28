@@ -2,7 +2,7 @@ package classes;
 
 import java.util.ArrayList;
 
-public class StandardMenu implements Menu {
+public final class StandardMenu implements Menu {
 
     private final ArrayList<MenuItem> menu;
 

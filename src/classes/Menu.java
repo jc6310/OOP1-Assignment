@@ -1,6 +1,6 @@
 package classes;
 
 // [3] interface example
-public interface Menu {
+public sealed interface Menu permits KidsMenu, VeganMenu, StandardMenu{
     void displayMenu();
 }
