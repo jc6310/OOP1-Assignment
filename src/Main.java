@@ -68,6 +68,12 @@ public class Main {
         System.out.println("Order: " + CustomerOne.getCustomerOrder() +" Status: "+ CustomerOne.getOrderStatus());
         CustomerOne.getOrder();
         greetingsMessage("bye", "");
+
+        // [A3] Records example
+        Contractor contractorElectrician = new Contractor(502, "Bob Murphy", "Electrician", 300, "Fix Lighting");
+        Contractor contractorPlumber = new Contractor(501, "Alan Brown", "Plumber", 150, "Fix Sink");
+        System.out.println("Name: "+contractorElectrician.name() + "worked on "+ contractorElectrician.task());
+        System.out.println("Name: "+contractorPlumber.name() + "worked on "+ contractorPlumber.task());
     }
 
     private static ArrayList<MenuItem> buildMenu(String menuType) {
