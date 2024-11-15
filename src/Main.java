@@ -38,8 +38,9 @@ public class Main {
             System.out.println("2. Vegan Menu");
             System.out.println("3. Main Menu");
             System.out.println("4. Special Menu");
-            System.out.println("5. Staff Currently Working");
-            System.out.println("6. Contractor Working");
+            System.out.println("5. Show Staff Currently Working");
+            System.out.println("6. Show Contractors Working");
+            System.out.println("7. Show Deliveroo Driver Details");
             System.out.println("q. Leave");
 
             String sc = scanner.next();
@@ -100,6 +101,16 @@ public class Main {
                         System.out.println("Name: "+contractorPlumber.name() + "worked on "
                                 + contractorPlumber.task());
                         break;
+                    case 7:
+                        // [A4] a custom immutable type
+                        DeliverooDelivery deliverooDelivery = new DeliverooDelivery(
+                                "Johnny Brown",
+                                1,
+                                false);
+                        System.out.println("Driver Name" +deliverooDelivery.getDriverName() +
+                                " with order" +deliverooDelivery.getOrderNo() +
+                                " status if delivery is pickup " +deliverooDelivery.getIsPickedUp());
+                        break;
                     default:
                         System.out.println("Invalid number provided please try again");
                 }
@@ -132,7 +143,6 @@ public class Main {
         System.out.println("Order: " + CustomerOne.getCustomerOrder() +" Status: "+ CustomerOne.getOrderStatus());
         CustomerOne.getOrder();
         greetingsMessage("bye", "");
-
     }
 
     private static ArrayList<MenuItem> buildMenu(String menuType) {
@@ -190,4 +200,24 @@ public class Main {
         for (Manager i : employee)
             System.out.println("Duty manager "+i.getName());
     }
+}
+
+// [A4] a custom immutable type
+final class  DeliverooDelivery {
+
+    private final String driverName;
+    private final int orderNo;
+    private final Boolean isPickedUp;
+
+    public DeliverooDelivery(String driverName, int orderNo,
+                             Boolean isPickedUp)
+    {
+        this.driverName = driverName;
+        this.orderNo = orderNo;
+        this.isPickedUp = isPickedUp;
+    }
+
+    public String getDriverName() { return driverName; }
+    public int getOrderNo() { return orderNo; }
+    public Boolean getIsPickedUp() { return isPickedUp; }
 }
