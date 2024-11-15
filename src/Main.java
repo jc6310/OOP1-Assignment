@@ -1,38 +1,29 @@
 import classes.*;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
+
+        // [05] Exceptions unchecked
+        File file = new File("fileThatDoesNotExist.txt");
+        try {
+            FileInputStream stream = new FileInputStream(file);
+        } catch (FileNotFoundException e) {
+            System.out.println(e.toString());
+        }
+
+        Scanner scanner = new Scanner(System.in);
 
         // [8] Example Of StringBuilder
         StringBuilder resTitle = new StringBuilder("Whatever Takeaway Restaurant");
         resTitle.insert(0, "Local ");
         System.out.println(resTitle);
-
-        //Build Kids Menu
-        var kidMenuItem = new ArrayList<MenuItem>();
-        kidMenuItem =  buildMenu(String.valueOf(MenuType.KIDS));
-        KidsMenu kidsMenu = new KidsMenu(kidMenuItem);
-        kidsMenu.displayMenu();
-
-        //Build Vegan Menu
-        var veganMenuItem = new ArrayList<MenuItem>();
-        veganMenuItem =  buildMenu(String.valueOf(MenuType.VEGAN));
-        // [4] Polymorphism example
-        VeganMenu veganMenu = new VeganMenu(veganMenuItem);
-        veganMenu.displayMenu();
-
-        //Build standard Menu
-        var standardMenuItem = new ArrayList<MenuItem>();
-        standardMenuItem =  buildMenu(String.valueOf(MenuType.STANDARD));
-
-        StandardMenu standardMenu = new StandardMenu(standardMenuItem);
-        standardMenu.displayMenu();
-
-        // [A2] Private, default and static interface methods.
-        Menu specialMenu = Menu.createMenu();
-        specialMenu.isSpecialMenu("Special");
 
         //create waiters and staff
         Waiter waiter = new Waiter(14.04, "Raul", 101, true);
@@ -41,13 +32,83 @@ public class Main {
         Manager manager = new Manager(501.04, "Bob", 15);
         Manager managerGeneral = new Manager(601.04, "James", 21, "General");
 
-        System.out.println(waiter.displayEmployeeDetails());
-        System.out.println(waiter1.displayEmployeeDetails());
-        System.out.println(manager.displayEmployeeDetails());
-        System.out.println(managerGeneral.displayGeneralManagerDetails());
+        while(true) {
+            System.out.println("Options Menu Available");
+            System.out.println("1. Kids Menu");
+            System.out.println("2. Vegan Menu");
+            System.out.println("3. Main Menu");
+            System.out.println("4. Special Menu");
+            System.out.println("5. Staff Currently Working");
+            System.out.println("6. Contractor Working");
+            System.out.println("q. Leave");
 
-        showEmployeeWorking(waiter, waiter1);  // Varargs
-        showEmployeeWorking(manager);
+            String sc = scanner.next();
+
+            if(sc.equalsIgnoreCase("q")) break;
+            int userInput;
+
+            // [05] Exceptions checked
+            try {
+                userInput = Integer.parseInt(sc);
+                System.out.println("Option Select: " +userInput);
+
+                switch(userInput) {
+                    case 1:
+                        //Build Kids Menu
+                        var kidMenuItem = new ArrayList<MenuItem>();
+                        kidMenuItem =  buildMenu(String.valueOf(MenuType.KIDS));
+                        KidsMenu kidsMenu = new KidsMenu(kidMenuItem);
+                        kidsMenu.displayMenu();
+                        break;
+                    case 2:
+                        //Build Vegan Menu
+                        var veganMenuItem = new ArrayList<MenuItem>();
+                        veganMenuItem =  buildMenu(String.valueOf(MenuType.VEGAN));
+                        // [4] Polymorphism example
+                        VeganMenu veganMenu = new VeganMenu(veganMenuItem);
+                        veganMenu.displayMenu();
+                        break;
+                    case 3:
+                        // Build standard Menu
+                        var standardMenuItem = new ArrayList<MenuItem>();
+                        standardMenuItem =  buildMenu(String.valueOf(MenuType.STANDARD));
+                        StandardMenu standardMenu = new StandardMenu(standardMenuItem);
+                        standardMenu.displayMenu();
+                        break;
+                    case 4:
+                        // [A2] Private, default and static interface methods.
+                        Menu specialMenu = Menu.createMenu();
+                        specialMenu.isSpecialMenu("Special");
+                        specialMenu.displayMenu();
+                        break;
+                    case 5:
+                        System.out.println(waiter.displayEmployeeDetails());
+                        System.out.println(waiter1.displayEmployeeDetails());
+                        System.out.println(manager.displayEmployeeDetails());
+                        System.out.println(managerGeneral.displayGeneralManagerDetails());
+                        showEmployeeWorking(waiter, waiter1);  // Varargs
+                        showEmployeeWorking(manager);
+                        break;
+                    case 6:
+                        // [A3] Records example
+                        Contractor contractorElectrician = new Contractor(502, "Bob Murphy",
+                                "Electrician", 300, "Fix Lighting");
+                        Contractor contractorPlumber = new Contractor(501, "Alan Brown",
+                                "Plumber", 150, "Fix Sink");
+                        System.out.println("Name: "+contractorElectrician.name() + "worked on "
+                                + contractorElectrician.task());
+                        System.out.println("Name: "+contractorPlumber.name() + "worked on "
+                                + contractorPlumber.task());
+                        break;
+                    default:
+                        System.out.println("Invalid number provided please try again");
+                }
+            } catch(NumberFormatException e) {
+                System.out.println("Invalid input, only numbers are accetped");
+            } finally{
+                System.out.println("Please retry again");
+            }
+        }
 
         greetingsMessage("greeting",waiter.getName());
         Order orderOne = new Order("Chicken And Chips", 52, 13.99);
@@ -72,11 +133,6 @@ public class Main {
         CustomerOne.getOrder();
         greetingsMessage("bye", "");
 
-        // [A3] Records example
-        Contractor contractorElectrician = new Contractor(502, "Bob Murphy", "Electrician", 300, "Fix Lighting");
-        Contractor contractorPlumber = new Contractor(501, "Alan Brown", "Plumber", 150, "Fix Sink");
-        System.out.println("Name: "+contractorElectrician.name() + "worked on "+ contractorElectrician.task());
-        System.out.println("Name: "+contractorPlumber.name() + "worked on "+ contractorPlumber.task());
     }
 
     private static ArrayList<MenuItem> buildMenu(String menuType) {
