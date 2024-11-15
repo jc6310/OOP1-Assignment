@@ -2,17 +2,17 @@ package classes;
 
 abstract class Employee {
 
-    private final int id;
+    private final Integer id;
     private final String name;
     private final double wage;
 
-    public Employee(double wage, String name, int id) {
+    public Employee(double wage, String name, Integer id) {
         this.wage = wage;
         this.name = name;
         this.id = id;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 

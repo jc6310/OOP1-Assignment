@@ -5,6 +5,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Scanner;
 import java.util.function.Predicate;
 
@@ -30,8 +32,9 @@ public class Main {
         Waiter waiter = new Waiter(14.04, "Raul", 101, true);
         Waiter waiter1 = new Waiter(11.04, "Johnny", 99, false);
 
-        Manager manager = new Manager(501.04, "Bob", 15);
-        Manager managerGeneral = new Manager(601.04, "James", 21, "General");
+        Manager manager = new Manager(501.04, "Bob", 25, "Assistant Mgt");
+        Manager managerInTraining = new Manager(201.04, "Mary", 41, "Training");
+        Manager managerGeneral = new Manager(601.04, "James", 11, "General");
 
         while(true) {
             System.out.println("Options Menu Available");
@@ -42,6 +45,7 @@ public class Main {
             System.out.println("5. Show Staff Currently Working");
             System.out.println("6. Show Contractors Working");
             System.out.println("7. Show Deliveroo Driver Details");
+            System.out.println("8. Show Managers By Rank Working");
             System.out.println("q. Leave");
 
             String sc = scanner.next();
@@ -90,6 +94,7 @@ public class Main {
                         System.out.println(managerGeneral.displayGeneralManagerDetails());
                         showEmployeeWorking(waiter, waiter1);  // Varargs
                         showEmployeeWorking(manager);
+
                         // [A5] Lambdas (Predicate).
                         Predicate<Waiter> waitersThatCanServeAlcohol =  i -> !i.isAllowedServiceAlcohol();
                         System.out.println("waiter: " + waiter.getName() +
@@ -117,6 +122,19 @@ public class Main {
                         System.out.println("Driver Name" +deliverooDelivery.getDriverName() +
                                 " with order" +deliverooDelivery.getOrderNo() +
                                 " status if delivery is pickup " +deliverooDelivery.getIsPickedUp());
+                        break;
+                    case 8:
+                        // [A5] Lambdas (Predicate) - method references
+                        List<Manager> mgtList = new ArrayList<>();
+                        mgtList.add(manager);
+                        mgtList.add(managerGeneral);
+                        mgtList.add(managerInTraining);
+
+                        Collections.sort(mgtList, Main::compareEmployeeIds);
+
+                        mgtList.stream()
+                                .map(mgt -> mgt.getTitle()+ " - "+mgt.getName())
+                                .forEach(System.out::println);
                         break;
                     default:
                         System.out.println("Invalid number provided please try again");
@@ -150,6 +168,11 @@ public class Main {
         System.out.println("Order: " + CustomerOne.getCustomerOrder() +" Status: "+ CustomerOne.getOrderStatus());
         CustomerOne.getOrder();
         greetingsMessage("bye", "");
+    }
+
+    public static int compareEmployeeIds(Manager a, Manager b)
+    {
+        return a.getId().compareTo(b.getId());
     }
 
     private static ArrayList<MenuItem> buildMenu(String menuType) {
