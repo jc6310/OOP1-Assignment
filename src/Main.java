@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.function.Predicate;
 
 public class Main {
     public static void main(String[] args) {
@@ -89,6 +90,12 @@ public class Main {
                         System.out.println(managerGeneral.displayGeneralManagerDetails());
                         showEmployeeWorking(waiter, waiter1);  // Varargs
                         showEmployeeWorking(manager);
+                        // [A5] Lambdas (Predicate).
+                        Predicate<Waiter> waitersThatCanServeAlcohol =  i -> !i.isAllowedServiceAlcohol();
+                        System.out.println("waiter: " + waiter.getName() +
+                                " serve alcohol " + waitersThatCanServeAlcohol.test(waiter));
+                        System.out.println("waiter: " + waiter1.getName() +
+                                " serve alcohol " + waitersThatCanServeAlcohol.test(waiter1));
                         break;
                     case 6:
                         // [A3] Records example
