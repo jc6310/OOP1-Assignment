@@ -24,11 +24,12 @@ abstract class Employee {
         return wage;
     }
 
+    // [01] method overloading
     public String displayEmployeeDetails() {
        return getName()+ "("+getId()+")" ;
     }
 
-    public String displayEmployeeDetailsWithPay() {
+    public String displayEmployeeDetails(Boolean showPay) {
         return getName()+ "("+getId()+") hourly rate "+ getWage();
     }
 

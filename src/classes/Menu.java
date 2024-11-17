@@ -2,7 +2,7 @@ package classes;
 
 import java.util.ArrayList;
 
-// [3] interface example
+// [03] interface example
 public sealed interface Menu permits KidsMenu, VeganMenu, StandardMenu{
     void displayMenu();
 
@@ -13,12 +13,12 @@ public sealed interface Menu permits KidsMenu, VeganMenu, StandardMenu{
             printSpecial();
         }
     }
-
+    // [A2] Private,
     private void printSpecial() {
         System.out.println("We can provide a is custom menu, on request");
     }
 
-    // static method
+    // [A2] static method
     static StandardMenu createMenu() {
         var menu_items = new ArrayList<MenuItem>();
         menu_items.add(new MenuItem(31, "Special Vegan Burger", 12.99));

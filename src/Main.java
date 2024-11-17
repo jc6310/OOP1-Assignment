@@ -13,7 +13,7 @@ import java.util.function.Predicate;
 public class Main {
     public static void main(String[] args) {
 
-        // [05] Exceptions unchecked
+        // [05] Exceptions checked
         File file = new File("fileThatDoesNotExist.txt");
         try {
             FileInputStream stream = new FileInputStream(file);
@@ -23,7 +23,7 @@ public class Main {
 
         Scanner scanner = new Scanner(System.in);
 
-        // [8] Example Of StringBuilder
+        // [08] Example Of StringBuilder
         StringBuilder resTitle = new StringBuilder("Whatever Takeaway Restaurant");
         resTitle.insert(0, "Local ");
         System.out.println(resTitle);
@@ -53,7 +53,7 @@ public class Main {
             if(sc.equalsIgnoreCase("q")) break;
             int userInput;
 
-            // [05] Exceptions checked
+            // [05] Exceptions unchecked
             try {
                 userInput = Integer.parseInt(sc);
                 System.out.println("Option Select: " +userInput);
@@ -88,11 +88,16 @@ public class Main {
                         specialMenu.displayMenu();
                         break;
                     case 5:
+                        System.out.println("Shows Waiter details");
                         System.out.println(waiter.displayEmployeeDetails());
                         System.out.println(waiter1.displayEmployeeDetails());
-                        System.out.println(manager.displayEmployeeDetails());
+
+                        System.out.println("Shows Manager details");
+                        System.out.println(manager.displayEmployeeDetails()); // [01] Method overloading
+                        System.out.println(manager.displayEmployeeDetails(true)); // [01] Method overloading
+
                         System.out.println(managerGeneral.displayGeneralManagerDetails());
-                        showEmployeeWorking(waiter, waiter1);  // Varargs
+                        showEmployeeWorking(waiter, waiter1);  // [01] Varargs
                         showEmployeeWorking(manager);
 
                         // [A5] Lambdas (Predicate).
@@ -108,9 +113,9 @@ public class Main {
                                 "Electrician", 300, "Fix Lighting");
                         Contractor contractorPlumber = new Contractor(501, "Alan Brown",
                                 "Plumber", 150, "Fix Sink");
-                        System.out.println("Name: "+contractorElectrician.name() + "worked on "
+                        System.out.println("Name: "+contractorElectrician.name() + " worked on "
                                 + contractorElectrician.task());
-                        System.out.println("Name: "+contractorPlumber.name() + "worked on "
+                        System.out.println("Name: "+contractorPlumber.name() + " worked on "
                                 + contractorPlumber.task());
                         break;
                     case 7:
@@ -119,7 +124,7 @@ public class Main {
                                 "Johnny Brown",
                                 1,
                                 false);
-                        System.out.println("Driver Name" +deliverooDelivery.getDriverName() +
+                        System.out.println("Driver Name " +deliverooDelivery.getDriverName() +
                                 " with order" +deliverooDelivery.getOrderNo() +
                                 " status if delivery is pickup " +deliverooDelivery.getIsPickedUp());
                         break;
@@ -150,12 +155,12 @@ public class Main {
         Order orderOne = new Order("Chicken And Chips", 52, 13.99);
         Order orderTwo = new Order("Chips With Taco", 32, 8.99);
 
-        // [7] example of arraylist
+        // [07] example of arraylist
         var orderItems = new ArrayList<Order>();
         orderItems.add(orderOne);
         orderItems.add(orderTwo);
 
-        // [8] Example Of date api
+        // [08] Example Of date api
         LocalDateTime purchaseTime = LocalDateTime.now();
 
         Customer CustomerOne = new Customer(orderItems, "DCX5682117", purchaseTime);
@@ -163,7 +168,8 @@ public class Main {
         CustomerOne.getBillTotal();
         System.out.println("Order Status:" +CustomerOne.getOrderStatus());
         System.out.println("Please pay, cost of order " +CustomerOne.getBillTotal());
-        // [A1] Call-by-value
+
+        // [A1] Call-by-value - changing the OrderStatus valave
         CustomerOne.updateOrderStatus("Order Ready");
         System.out.println("Order: " + CustomerOne.getCustomerOrder() +" Status: "+ CustomerOne.getOrderStatus());
         CustomerOne.getOrder();
@@ -177,12 +183,13 @@ public class Main {
 
     private static ArrayList<MenuItem> buildMenu(String menuType) {
         //[01] example of LVTI
-        var menu_items = new ArrayList<MenuItem>();
-        String[] titles = new String[4];
-        titles[0] = "Burger";
-        titles[1] = "Chips";
-        titles[2] = "Sausage";
-        titles[3] = "Chicken";
+        var menu_items = new ArrayList<MenuItem>(); //[08] arraylist
+
+        //[07] java array
+        String[] titles = {"Burger", "Chips", "Sausage", "Chicken"};
+
+        //[08] java code string
+        String foodItem = "Chicken Brest And Potatoes";
 
         switch (menuType) {
             case "KIDS":
@@ -201,7 +208,7 @@ public class Main {
                 menu_items.add(new MenuItem(51, titles[1] +" And "+ titles[0], 15.99));
                 menu_items.add(new MenuItem(52, titles[3] +" And "+ titles[1], 13.99));
                 menu_items.add(new MenuItem(53, titles[2] +" And Mashed Potatoes", 16.99));
-                menu_items.add(new MenuItem(54, "Chicken Brest And Potatoes", 14.99));
+                menu_items.add(new MenuItem(54, foodItem, 14.99));
         }
         return menu_items;
     }
