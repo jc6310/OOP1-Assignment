@@ -1,8 +1,31 @@
-# OOP1 Assignment
+# OOP1 and OOP2 Assignment
 
 Assignment is to demonstrate what was learned from the module to build a Java application.
 
-##  Requirements/ Features
+
+##  OOP2 Requirements/ Features
+Features that the application most show.
+
+1. [O1_OOP2] Lambdas: for example: Consumer, Predicate, Supplier, Function etc..
+2. [02_OOP2] Streams - terminal operations\
+      min(), max(), count(), findAny(),\
+      findFirst(), allMatch(), anyMatch(), noneMatch(), forEach() \
+      collect() - Collectors.toMap(),\
+       Collectors.groupingBy() and Collectors.partitioningBy()
+3. [03_OOP2] Streams - intermediate operations e.g. filter(), distinct(), limit(), map() and sorted()
+4. [04_OOP2] Switch expressions and pattern matching.
+5. [05_OOP2] Sealed classes and interface.
+6. [06_OOP2] Date/Time API.
+7. [07_OOP2] Records.
+
+** Advanced **
+
+1. [A1_OOP2] Collections/generics - for example: use of Comparator.comparing() for sorting.
+2. [A2_OOP2] Concurrency e.g. using ExecutorService to process a list of Callables.
+3. [A3_OOP2] NIO2.
+4. [A4_OOP2] Localisation.
+
+##  OOP1 Requirements/ Features
 
 Features that the application most show.
 1. [01] Classes
