@@ -2,7 +2,7 @@ package classes;
 
 import java.util.ArrayList;
 
-// [03] interface example
+// [03] [05_OOP2] interface example
 public sealed interface Menu permits KidsMenu, VeganMenu, StandardMenu{
     void displayMenu();
 

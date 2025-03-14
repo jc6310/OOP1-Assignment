@@ -2,8 +2,8 @@ package classes;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public class RewardsCard {
@@ -11,15 +11,15 @@ public class RewardsCard {
     private final Integer id;
     private final String name;
     private final String surname;
-    final List<Offers> offer;
     private final LocalDate registeredDate;
     private final LocalDateTime lastLoggedInDateTime;
+    final List<Offers> offers;
 
-    public RewardsCard(String surname, String name, List<Offers> offer) {
+    public RewardsCard(String surname, String name) {
         this.id = setRewardId();
         this.surname = surname;
         this.name = name;
-        this.offer = offer;
+        this.offers = new ArrayList<>();
         this.registeredDate = setRegisteredDate();
         this.lastLoggedInDateTime = setRegisteredTimeDate();
     }
@@ -45,10 +45,12 @@ public class RewardsCard {
     }
 
     private LocalDate setRegisteredDate() {
+        // [06_OOP2] Date/Time API
         return LocalDate.now();
     }
 
     private LocalDateTime setRegisteredTimeDate() {
+        // [06_OOP2] Date/Time API
         return LocalDateTime.now();
     }
 
@@ -57,10 +59,12 @@ public class RewardsCard {
         return randomValue.get();
     }
 
-    private Consumer setOffers() {
+    // Method to add offers to the Reward
+    public void addOffer(Offers offer) {
+        offers.add(offer);
+    }
 
-        Consumer<String> print = x -> System.out.println(x);
-        print.accept("java");
-        return print;
+    public List<Offers> getOffers() {
+        return offers;
     }
 }

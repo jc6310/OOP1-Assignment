@@ -1,18 +1,24 @@
 package classes;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
+import java.util.function.Function;
 
 public class Offers {
 
     int offerId;
-    int discount;
+    double discount;
     String offerName;
+    boolean isAvailable;
 
-    public Offers(String offerName, int offerId, int discount) {
+    public Offers(String offerName, int offerId, double discount, boolean isAvailable) {
         this.offerId = offerId;
         this.offerName = offerName;
         this.discount = discount;
+        this.isAvailable = isAvailable;
     }
 
-    public double getPrice() {
+    public double getDiscount() {
         return discount;
     }
 
@@ -20,7 +26,33 @@ public class Offers {
         return offerName;
     }
 
-    public int getOfferId() {
-        return offerId;
+    public boolean getIsAvailable() {
+        return isAvailable;
+    }
+
+    // Consumer: Apply discount to a specific price
+    public void applyDiscount(Consumer<Double> discountConsumer) {
+        discountConsumer.accept(this.discount);
+    }
+
+    // Predicate: Check if the discount is above a threshold
+    public boolean isDiscountAboveThreshold(Predicate<Offers> discountPredicate) {
+        // Check if the predicate is not null and evaluate it, otherwise return false
+        return discountPredicate != null && discountPredicate.test(this);
+    }
+
+    // Supplier: Get a discount message based on the offer
+    public String getDiscountMessage(Supplier<String> discountMessageSupplier) {
+        return discountMessageSupplier.get();
+    }
+
+    // Function: Get the final price after discount
+    public double getFinalPrice(double originalPrice, Function<Double, Double> discountFunction) {
+        return discountFunction.apply(originalPrice);
+    }
+
+    @Override
+    public String toString() {
+        return "Offer ID: " + offerId + ", Discount: " + discount + "%, Name: " + offerName + ", Available: " + isAvailable;
     }
 }

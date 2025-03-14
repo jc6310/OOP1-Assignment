@@ -3,6 +3,8 @@ import classes.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -108,7 +110,7 @@ public class Main {
                                 " serve alcohol " + waitersThatCanServeAlcohol.test(waiter1));
                         break;
                     case 6:
-                        // [A3] Records example
+                        // [A3] [07_OOP2] Records example
                         Contractor contractorElectrician = new Contractor(502, "Bob Murphy",
                                 "Electrician", 300, "Fix Lighting");
                         Contractor contractorPlumber = new Contractor(501, "Alan Brown",
@@ -169,11 +171,48 @@ public class Main {
         System.out.println("Order Status:" +CustomerOne.getOrderStatus());
         System.out.println("Please pay, cost of order " +CustomerOne.getBillTotal());
 
+        // [06_OOP2] Date/Time API. That using  [04_OOP2] Switch expressions and pattern matching.
+        LocalDate today = LocalDate.now();
+
+        Offers thursdayOffer = new Offers("Thursday Specical 20% off", 1001,20, setOffersAvailable(String.valueOf(today.getDayOfWeek())));
+        Offers satMatchDayOffer = new Offers("Match Day Special Buy 1 Get 1 Free", 1002,50, setOffersAvailable(String.valueOf(today.getDayOfWeek())));
+        Offers loyalOffer = new Offers("Regular Customer Discount", 1003,10, true);
+
+        RewardsCard rewardsCustomer1 = new RewardsCard("Bloggs", "Joe");
+        rewardsCustomer1.addOffer(thursdayOffer);
+        rewardsCustomer1.addOffer(satMatchDayOffer);
+        rewardsCustomer1.addOffer(loyalOffer);
+
+        // [O1_OOP2] Predicate example: Check if discount is above 5% and avaiavle
+        Predicate<Offers> discountAbove18AndAvailable = offer -> thursdayOffer.getDiscount() > 5 && thursdayOffer.getIsAvailable();
+        boolean isOfferAvailable = thursdayOffer.isDiscountAboveThreshold(discountAbove18AndAvailable);
+
+        double currentPrice = CustomerOne.getBillTotal();
+
+        if (isOfferAvailable) {
+            // [O1_OOP2]  Supplier: Get discount message
+            String discountMessage = loyalOffer.getDiscountMessage(() -> "Get " + thursdayOffer.getDiscount() + "% off on your next purchase.");
+            System.out.println(discountMessage);
+
+            // [O1_OOP2] Consumer: Apply discount
+            thursdayOffer.applyDiscount(discount -> {
+                System.out.println("Applying a discount of " + discount + "% on the product.");
+            });
+            // [O1_OOP2] Function: applying discount
+            double updatedPrice = thursdayOffer.getFinalPrice(currentPrice, price -> price * (1 - thursdayOffer.getDiscount() / 100));
+
+            currentPrice = updatedPrice;
+        }
+        System.out.println("Final price after discount: $" + currentPrice);
+
         // [A1] Call-by-value - changing the OrderStatus valave
         CustomerOne.updateOrderStatus("Order Ready");
         System.out.println("Order: " + CustomerOne.getCustomerOrder() +" Status: "+ CustomerOne.getOrderStatus());
         CustomerOne.getOrder();
         greetingsMessage("bye", "");
+
+        System.out.println("Final price after discount: $" + currentPrice);
+
     }
 
     public static int compareEmployeeIds(Manager a, Manager b)
@@ -212,7 +251,22 @@ public class Main {
         }
         return menu_items;
     }
-    // [A6] Switch expressions with pattern matching.
+    //[04_OOP2] Switch expressions with pattern matching.
+    private static boolean setOffersAvailable(String weekday){
+
+        System.out.println("week Day is -> "+weekday);
+
+        switch (weekday) {
+            case "THURSDAY", "SATURDAY" -> {
+                return true;
+            }
+            default -> {
+                return false;
+            }
+        }
+    }
+
+    // [A6] Switch expressions and pattern matching.
     private static void greetingsMessage(String type, String message){
         switch (type) {
             case "greeting" -> System.out.println("Hi my name is " + message +" What u want to order?");
@@ -221,6 +275,7 @@ public class Main {
             default -> System.out.println("Can u say that again");
         }
     }
+
 
     // [01] example of Varargs and method overload
     static void showEmployeeWorking(Waiter... employee)
