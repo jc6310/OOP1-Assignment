@@ -6,11 +6,9 @@ import java.io.FileNotFoundException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class Main {
     public static void main(String[] args) {
@@ -178,10 +176,20 @@ public class Main {
         Offers satMatchDayOffer = new Offers("Match Day Special Buy 1 Get 1 Free", 1002,50, setOffersAvailable(String.valueOf(today.getDayOfWeek())));
         Offers loyalOffer = new Offers("Regular Customer Discount", 1003,10, true);
 
-        RewardsCard rewardsCustomer1 = new RewardsCard("Bloggs", "Joe");
+        RewardsCard rewardsCustomer1 = new RewardsCard("Murphy", "Brian", 211);
         rewardsCustomer1.addOffer(thursdayOffer);
         rewardsCustomer1.addOffer(satMatchDayOffer);
         rewardsCustomer1.addOffer(loyalOffer);
+
+        RewardsCard rewardsCustomer2 = new RewardsCard("Bloggs", "Joe", 558);
+        rewardsCustomer2.addOffer(thursdayOffer);
+        rewardsCustomer2.addOffer(satMatchDayOffer);
+        rewardsCustomer2.addOffer(loyalOffer);
+
+        RewardsCard rewardsCustomer3 = new RewardsCard("Costello", "Anne", 11);
+        rewardsCustomer3.addOffer(thursdayOffer);
+        rewardsCustomer3.addOffer(satMatchDayOffer);
+        rewardsCustomer3.addOffer(loyalOffer);
 
         // [O1_OOP2] Predicate example: Check if discount is above 5% and avaiavle
         Predicate<Offers> discountAbove18AndAvailable = offer -> thursdayOffer.getDiscount() > 5 && thursdayOffer.getIsAvailable();
@@ -213,6 +221,159 @@ public class Main {
 
         System.out.println("Final price after discount: $" + currentPrice);
 
+        System.out.println("-----------------------" );
+        System.out.println("Add Rewards Points Summary" );
+
+        List<RewardsCard> rewardsCards = Arrays.asList(rewardsCustomer3, rewardsCustomer2, rewardsCustomer1);
+
+        // [02 OOP2] Streams terminal operations -count()
+        getNumberOfRewardCards(rewardsCards);
+        // [02 OOP2] Streams  terminal operations- min() max()
+        getLowestAndHighestPoints(rewardsCards);
+        // [02 OOP2] Streams terminal operations- forEach()
+        printAllForEachCard(rewardsCards);
+        // [02 OOP2] Streams terminal operations- allMatch(), anyMatch(), noneMatch()
+        checkCardsIfBalancesMatches(rewardsCards, 101);
+        // [02 OOP2] Streams terminal operations- findAny(),findFirst()
+        findAnyName(rewardsCards);
+        // [02 OOP2] Streams terminal operations- collect() - Collectors.toMap(), Collectors.groupingBy() and Collectors.partitioningBy()
+        collectorsGroupBy(rewardsCards, 222);
+
+        // [03 OOP2] Intermediate Stream Operations
+        streamTerminalOperations(rewardsCards, 0,100,2);
+        streamTerminalOperations(rewardsCards, 1,100,2);
+        streamTerminalOperations(rewardsCards, 2,100,2);
+        streamTerminalOperations(rewardsCards, 3,100,2);
+        streamTerminalOperations(rewardsCards, 4,100,2);
+        streamTerminalOperations(rewardsCards, 5,100,2);
+
+    }
+    // [03 OOP2] Intermediate Stream Operations
+    private static void streamTerminalOperations(List<RewardsCard> rewardsCards, int option, int amount, int limit) {
+
+        switch (option) {
+            case 0:
+                // filter() - Filter RewardsCards that have reward points greater than
+                List<RewardsCard> filteredCards = rewardsCards.stream()
+                        .filter(card -> card.getRewardPoints() > amount)
+                        .toList();
+                System.out.println("-------- ----------- ---------- ---");
+                System.out.println("Filtered Cards (Reward Points > "+amount+"):");
+                filteredCards.forEach(card -> System.out.println(card.getName() + " " + card.getRewardPoints()));
+                break;
+            case 1:
+                // distinct() - Get distinct offers across all RewardsCards (based on Offer name)
+                List<Offers> distinctOffers = rewardsCards.stream()
+                        .flatMap(card -> card.getOffers().stream()) // Flatten the list of offers
+                        .distinct()
+                        .toList();
+                System.out.println("-------- ----------- ---------- ---");
+                System.out.println("Distinct Offers:");
+                distinctOffers.forEach(offer -> System.out.println(offer.getOfferName()));
+                break;
+            case 2:
+                // limit() - Limit the stream
+                List<RewardsCard> limitedCards = rewardsCards.stream()
+                        .limit(limit)
+                        .toList();
+                System.out.println("-------- ----------- ---------- ---");
+                System.out.println("Limited Cards (First "+limit+" Cards):");
+                limitedCards.forEach(card -> System.out.println(card.getName() + " " + card.getRewardPoints()));
+                break;
+            case 3:
+                // map() - Transform the stream by extracting just the reward points of each RewardsCard
+                List<Integer> rewardPointsList = rewardsCards.stream()
+                        .map(RewardsCard::getRewardPoints) // Map each RewardsCard to its reward points
+                        .toList();
+                System.out.println("-------- ----------- ---------- ---");
+                System.out.println("Reward Points of All Cards: " + rewardPointsList);
+                break;
+            case 4:
+                // sorted() - Sort RewardsCards by their reward points (ascending order)
+                List<RewardsCard> sortedCards = rewardsCards.stream()
+                        .sorted(Comparator.comparingInt(RewardsCard::getRewardPoints)) // Sorting by reward points
+                        .toList();
+                System.out.println("-------- ----------- ---------- ---");
+                System.out.println("Sorted Cards by Reward Points (Ascending):");
+                sortedCards.forEach(card -> System.out.println(card.getName() + " " + card.getRewardPoints()));
+                break;
+            default:
+                // sorted() in descending order
+                List<RewardsCard> sortedCardsDescending = rewardsCards.stream()
+                        .sorted((card1, card2) -> Integer.compare(card2.getRewardPoints(), card1.getRewardPoints())) // Sorting by reward points descending
+                        .toList();
+                System.out.println("-------- ----------- ---------- ---");
+                System.out.println("Sorted Cards by Reward Points (Descending):");
+                sortedCardsDescending.forEach(card -> System.out.println(card.getName() + " " + card.getRewardPoints()));
+        }
+
+    }
+
+    private static void collectorsGroupBy(List<RewardsCard> rewardsCards, int amount) {
+        // Collect - Collect RewardsCards into a Map by their reward points
+        Map<Integer, RewardsCard> rewardsCardMap = rewardsCards.stream()
+                .collect(Collectors.toMap(RewardsCard::getRewardPoints, card -> card));
+        System.out.println("Rewards Cards Map by Reward Points: " + rewardsCardMap);
+
+        // Group by reward points
+        Map<Integer, List<RewardsCard>> groupedByPoints = rewardsCards.stream()
+                .collect(Collectors.groupingBy(RewardsCard::getRewardPoints));
+        System.out.println("Rewards Cards Grouped by Reward Points: " + groupedByPoints);
+
+        // Partition by whether the reward points are above or below 300
+        Map<Boolean, List<RewardsCard>> partitionedByPoints = rewardsCards.stream()
+                .collect(Collectors.partitioningBy(card -> card.getRewardPoints() > amount));
+        System.out.println("Rewards Cards Partitioned by Points > 300: " + partitionedByPoints);
+    }
+
+    private static void findAnyName(List<RewardsCard> rewardsCards) {
+        // [02 OOP2] Streams - findAny() - Find any RewardsCard (this could be any card)
+        Optional<RewardsCard> anyCard = rewardsCards.stream().findAny();
+        anyCard.ifPresent(card -> System.out.println("Any Reward Card found: " + card.getName()));
+
+        // [02 OOP2] Streams -findFirst() - Find the first RewardsCard in the list
+        Optional<RewardsCard> firstCard = rewardsCards.stream().findFirst();
+        firstCard.ifPresent(card -> System.out.println("First Reward Card: " + card.getName()));
+    }
+
+    private static void checkCardsIfBalancesMatches(List<RewardsCard> rewardsCards, int amount) {
+        // allMatch() - Check reward points greater than
+        boolean allMatch = rewardsCards.stream().allMatch(card -> card.getRewardPoints() > amount);
+        System.out.println("All cards have reward points greater than " +amount +" : " + allMatch);
+
+        // anyMatch() - Check if any RewardsCard has reward points greater than
+        boolean anyMatch = rewardsCards.stream().anyMatch(card -> card.getRewardPoints() > amount);
+        System.out.println("Any card has reward points greater than " +amount +" : "  + anyMatch);
+
+        // noneMatch() - Check if none of the RewardsCards has reward points greater than
+        boolean noneMatch = rewardsCards.stream().noneMatch(card -> card.getRewardPoints() > amount);
+        System.out.println("No cards have reward points greater than " +amount +" : " + noneMatch);
+    }
+
+    // [02 OOP2] Streams forEach() - Print each RewardsCard's details
+    private static void printAllForEachCard(List<RewardsCard> rewardsCards) {
+        // count() - Count the number of RewardsCards
+        rewardsCards.stream().forEach(card -> System.out.println(card.getName() + " " + card.getSurname() + " Points: " + card.getRewardPoints()));
+
+    }
+
+    // [02 OOP2] Streams - min() max()
+    private static void getNumberOfRewardCards(List<RewardsCard> rewardsCards) {
+        // count() - Count the number of RewardsCards
+        long count = rewardsCards.stream().count();
+        System.out.println("Total Rewards Cards: " + count);
+    }
+    // [02 OOP2] Streams - min() max()
+    private static void getLowestAndHighestPoints(List<RewardsCard> rewardsCards) {
+        // min() - Find the RewardsCard with the fewest reward points
+        Optional<RewardsCard> minRewardCard = rewardsCards.stream()
+                .min(Comparator.comparingInt(RewardsCard::getRewardPoints));
+        minRewardCard.ifPresent(card -> System.out.println("Min Reward Points " + card.getRewardPoints()));
+
+        // max() - Find the RewardsCard with the most reward points
+        Optional<RewardsCard> maxRewardCard = rewardsCards.stream()
+                .max(Comparator.comparingInt(RewardsCard::getRewardPoints));
+        maxRewardCard.ifPresent(card -> System.out.println("Max Reward Points " + card.getRewardPoints()));
     }
 
     public static int compareEmployeeIds(Manager a, Manager b)

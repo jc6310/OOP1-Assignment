@@ -13,15 +13,17 @@ public class RewardsCard {
     private final String surname;
     private final LocalDate registeredDate;
     private final LocalDateTime lastLoggedInDateTime;
+    private int rewardPoints;
     final List<Offers> offers;
 
-    public RewardsCard(String surname, String name) {
+    public RewardsCard(String surname, String name, int rewardPoints) {
         this.id = setRewardId();
         this.surname = surname;
         this.name = name;
         this.offers = new ArrayList<>();
         this.registeredDate = setRegisteredDate();
         this.lastLoggedInDateTime = setRegisteredTimeDate();
+        this.rewardPoints = rewardPoints;
     }
 
     public Integer getId() {
@@ -42,6 +44,14 @@ public class RewardsCard {
 
     public LocalDateTime getRegisteredTimeDate() {
         return lastLoggedInDateTime;
+    }
+
+    public int getRewardPoints() {
+        return rewardPoints;
+    }
+
+    public void setRewardPoints(int rewardPoints) {
+        this.rewardPoints = rewardPoints;
     }
 
     private LocalDate setRegisteredDate() {
