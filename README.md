@@ -43,6 +43,8 @@ Features that the application most show.
 7. [07] Arrays.
 8. [08] Use of Java Core API (String, StringBuilder, List/ArrayList, Date API).
 
+![UML](./images/oop2-uml-v1.png)
+
 ** Advanced **
 
 1. [A1] Call-by-value and defensive copying.
