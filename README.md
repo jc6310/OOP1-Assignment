@@ -25,6 +25,9 @@ Features that the application most show.
 3. [A3_OOP2] NIO2.
 4. [A4_OOP2] Localisation.
 
+![UML](./images/oop2-uml-v1.png)
+
+
 ##  OOP1 Requirements/ Features
 
 Features that the application most show.
@@ -43,7 +46,6 @@ Features that the application most show.
 7. [07] Arrays.
 8. [08] Use of Java Core API (String, StringBuilder, List/ArrayList, Date API).
 
-![UML](./images/oop2-uml-v1.png)
 
 ** Advanced **
 
