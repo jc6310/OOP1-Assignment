@@ -3,6 +3,7 @@ import classes.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -11,7 +12,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
         // [05] Exceptions checked
         File file = new File("fileThatDoesNotExist.txt");
@@ -208,7 +209,7 @@ public class Main {
             });
             // [O1_OOP2] Function: applying discount
             double updatedPrice = thursdayOffer.getFinalPrice(currentPrice, price -> price * (1 - thursdayOffer.getDiscount() / 100));
-
+            CustomerOne.setDiscount(20);
             currentPrice = updatedPrice;
         }
         System.out.println("Final price after discount: $" + currentPrice);
@@ -246,6 +247,12 @@ public class Main {
         streamTerminalOperations(rewardsCards, 3,100,2);
         streamTerminalOperations(rewardsCards, 4,100,2);
         streamTerminalOperations(rewardsCards, 5,100,2);
+
+        // [A3_OOP2] NIO2
+        String filePath = LocalDateTime.now()+"-receipt.txt";
+        CustomerOne.setDiscount(rewardsCustomer1.getRewardPoints());
+        CustomerOne.printReceipt(filePath);
+        CustomerOne.readReceipt(filePath);
 
     }
     // [03 OOP2] Intermediate Stream Operations
