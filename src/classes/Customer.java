@@ -9,7 +9,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;
 
-public class Customer {
+public class Customer  {
 
     String orderStatus = "Preparing";
     final List<Order> order;

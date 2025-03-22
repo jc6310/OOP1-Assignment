@@ -8,6 +8,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.concurrent.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -254,6 +255,9 @@ public class Main {
         CustomerOne.printReceipt(filePath);
         CustomerOne.readReceipt(filePath);
 
+        // [A2_OOP2] Concurrency e.g. using ExecutorService to process a list of Callables.
+        processContractorConcurrently();
+
     }
     // [03 OOP2] Intermediate Stream Operations
     private static void streamTerminalOperations(List<RewardsCard> rewardsCards, int option, int amount, int limit) {
@@ -419,6 +423,34 @@ public class Main {
         }
         return menu_items;
     }
+
+    // [A2_OOP2] Concurrency e.g. using ExecutorService to process a list of Callables.
+    private static void processContractorConcurrently() {
+        ExecutorService executorService = Executors.newFixedThreadPool(3);
+        List<Callable<String>> contractorTasks = new ArrayList<>();
+
+        List<Contractor> contractor = List.of(
+                new Contractor(1, "Alan Brown", "Electrician", 500, "Fix Lighting"),
+                new Contractor(2, "joe bloggs", "Plumber", 500, "Fix toilet"),
+                new Contractor(3, "Alan Brown", "Plumber", 500, "Fix Sink")
+        );
+
+        contractorTasks.addAll(contractor);
+
+        try {
+            List<Future<String>> results = executorService.invokeAll(contractorTasks);
+            for (Future<String> future : results) {
+                System.out.println("Contractor - " + future.get() + " ");
+            }
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        } finally {
+            executorService.shutdown();
+        }
+    }
+
+
+
     //[04_OOP2] Switch expressions with pattern matching.
     private static boolean setOffersAvailable(String weekday){
 

@@ -38,4 +38,5 @@ abstract class Employee {
     }
 
     public abstract String displayAllEmployeeDetails();
+
 }
