@@ -257,6 +257,8 @@ public class Main {
 
         // [A2_OOP2] Concurrency e.g. using ExecutorService to process a list of Callables.
         processContractorConcurrently();
+        //  [A1_OOP2] Collections/generics - for example: use of Comparator.comparing() for sorting.
+        sortManagerSortByWage();
 
     }
     // [03 OOP2] Intermediate Stream Operations
@@ -431,8 +433,8 @@ public class Main {
 
         List<Contractor> contractor = List.of(
                 new Contractor(1, "Alan Brown", "Electrician", 500, "Fix Lighting"),
-                new Contractor(2, "joe bloggs", "Plumber", 500, "Fix toilet"),
-                new Contractor(3, "Alan Brown", "Plumber", 500, "Fix Sink")
+                new Contractor(2, "joe bloggs", "Plumber", 550, "Fix toilet"),
+                new Contractor(3, "Alan Brown", "Plumber", 300, "Fix Sink")
         );
 
         contractorTasks.addAll(contractor);
@@ -447,8 +449,19 @@ public class Main {
         } finally {
             executorService.shutdown();
         }
-    }
 
+    }
+    //[A1_OOP2] Collections/generics - for example: use of Comparator.comparing() for sorting.
+    private static void sortManagerSortByWage() {
+        List<Manager> employees = new ArrayList<>(List.of(
+                new Manager(500, "Alan Brown", 10, "Manager"),
+                new Manager(350, "joe bloggs", 30, "Supervisor"),
+                new Manager(450, "Alan Brown", 15, "Assist Manager")
+        ));
+        employees.sort(Comparator.comparing(Manager::getWage));
+        System.out.println("\nSorted Manager by Name:");
+        employees.forEach(employee -> System.out.println(employee.getName()));
+    }
 
 
     //[04_OOP2] Switch expressions with pattern matching.
