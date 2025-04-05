@@ -30,23 +30,23 @@ public class Offers {
         return isAvailable;
     }
 
-    // Consumer: Apply discount to a specific price
+    // [O1_OOP2] Consumer: Apply discount to a specific price
     public void applyDiscount(Consumer<Double> discountConsumer) {
         discountConsumer.accept(this.discount);
     }
 
-    // Predicate: Check if the discount is above a threshold
+    // [O1_OOP2] Predicate: Check if the discount is above a threshold
     public boolean isDiscountAboveThreshold(Predicate<Offers> discountPredicate) {
         // Check if the predicate is not null and evaluate it, otherwise return false
         return discountPredicate != null && discountPredicate.test(this);
     }
 
-    // Supplier: Get a discount message based on the offer
+    // [O1_OOP2] Supplier: Get a discount message based on the offer
     public String getDiscountMessage(Supplier<String> discountMessageSupplier) {
         return discountMessageSupplier.get();
     }
 
-    // Function: Get the final price after discount
+    // [O1_OOP2] Function: Get the final price after discount
     public double getFinalPrice(double originalPrice, Function<Double, Double> discountFunction) {
         return discountFunction.apply(originalPrice);
     }

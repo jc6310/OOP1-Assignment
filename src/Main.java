@@ -1,5 +1,5 @@
 import classes.*;
-
+import java.text.DecimalFormat;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -13,6 +13,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class Main {
+    private static final DecimalFormat roundingPrice = new DecimalFormat("0.00");
     public static void main(String[] args) throws IOException {
 
         // [05] Exceptions checked
@@ -115,6 +116,7 @@ public class Main {
                                 "Electrician", 300, "Fix Lighting");
                         Contractor contractorPlumber = new Contractor(501, "Alan Brown",
                                 "Plumber", 150, "Fix Sink");
+
                         System.out.println("Name: "+contractorElectrician.name() + " worked on "
                                 + contractorElectrician.task());
                         System.out.println("Name: "+contractorPlumber.name() + " worked on "
@@ -171,11 +173,13 @@ public class Main {
         System.out.println("Order Status:" +CustomerOne.getOrderStatus());
         System.out.println("Please pay, cost of order " +CustomerOne.getBillTotal());
 
-        // [06_OOP2] Date/Time API. That using  [04_OOP2] Switch expressions and pattern matching.
+        // [06_OOP2] Date/Time API. That using [04_OOP2] Switch expressions and pattern matching.
         LocalDate today = LocalDate.now();
 
-        Offers thursdayOffer = new Offers("Thursday Specical 20% off", 1001,20, setOffersAvailable(String.valueOf(today.getDayOfWeek())));
-        Offers satMatchDayOffer = new Offers("Match Day Special Buy 1 Get 1 Free", 1002,50, setOffersAvailable(String.valueOf(today.getDayOfWeek())));
+        Offers thursdayOffer = new Offers("Thursday Specical 20% off", 1001,20,
+                setOffersAvailable(String.valueOf(today.getDayOfWeek())));
+        Offers satMatchDayOffer = new Offers("Match Day Special Buy 1 Get 1 Free", 1002,50,
+                setOffersAvailable(String.valueOf(today.getDayOfWeek())));
         Offers loyalOffer = new Offers("Regular Customer Discount", 1003,10, true);
 
         RewardsCard rewardsCustomer1 = new RewardsCard("Murphy", "Brian", 211);
@@ -193,27 +197,46 @@ public class Main {
         rewardsCustomer3.addOffer(satMatchDayOffer);
         rewardsCustomer3.addOffer(loyalOffer);
 
-        // [O1_OOP2] Predicate example: Check if discount is above 5% and avaiavle
-        Predicate<Offers> discountAbove18AndAvailable = offer -> thursdayOffer.getDiscount() > 5 && thursdayOffer.getIsAvailable();
-        boolean isOfferAvailable = thursdayOffer.isDiscountAboveThreshold(discountAbove18AndAvailable);
+        System.out.println();
+        System.out.println("-------------- Date/Time API. Example ------------------");
+        System.out.println("Customer3 RegisteredDate -> "+ rewardsCustomer3.getRegisteredDate());
+        System.out.println("Customer3 getRegisteredTimeDate ->"+ rewardsCustomer3.getRegisteredTimeDate());
+        System.out.println("-------------- Date/Time API. Example ------------------");
+
+        System.out.println();
+
+        System.out.println("-------------- Lambdas Example ------------------");
+        System.out.println("-------------- Lambdas Predicate ----------------");
 
         double currentPrice = CustomerOne.getBillTotal();
+        System.out.println("Current Price -> "+currentPrice);
+
+        // [O1_OOP2] Predicate: Check if discount is above 5% and available
+        Predicate<Offers> discountAbove5AndAvailable = offer -> loyalOffer.getDiscount() > 5 && loyalOffer.getIsAvailable();
+        boolean isOfferAvailable = loyalOffer.isDiscountAboveThreshold(discountAbove5AndAvailable);
+        System.out.println("Predicate condition -> "+ isOfferAvailable);
 
         if (isOfferAvailable) {
             // [O1_OOP2]  Supplier: Get discount message
-            String discountMessage = loyalOffer.getDiscountMessage(() -> "Get " + thursdayOffer.getDiscount() + "% off on your next purchase.");
+            System.out.println("-------------- Lambdas Supplier ----------------");
+            String discountMessage = loyalOffer.getDiscountMessage(() -> "Get " + loyalOffer.getDiscount() + "% off on your next purchase.");
             System.out.println(discountMessage);
 
             // [O1_OOP2] Consumer: Apply discount
-            thursdayOffer.applyDiscount(discount -> {
-                System.out.println("Applying a discount of " + discount + "% on the product.");
+            System.out.println("-------------- Lambdas Consumer ----------------");
+            loyalOffer.applyDiscount(discount -> {
+                System.out.println("Applying a discount of " + loyalOffer.getDiscount() + "% on the product.");
             });
+
             // [O1_OOP2] Function: applying discount
-            double updatedPrice = thursdayOffer.getFinalPrice(currentPrice, price -> price * (1 - thursdayOffer.getDiscount() / 100));
-            CustomerOne.setDiscount(20);
+            System.out.println("-------------- Lambdas Function ----------------");
+            double updatedPrice = loyalOffer.getFinalPrice(currentPrice, price -> price * (1 - loyalOffer.getDiscount() / 100));
+            CustomerOne.setDiscount(10);
             currentPrice = updatedPrice;
         }
-        System.out.println("Final price after discount: $" + currentPrice);
+        System.out.println("Final price after discount: $" + roundingPrice.format(currentPrice));
+        System.out.println("-------------- End Of Lambdas Example ------------------");
+        System.out.println();
 
         // [A1] Call-by-value - changing the OrderStatus valave
         CustomerOne.updateOrderStatus("Order Ready");
@@ -228,26 +251,37 @@ public class Main {
 
         List<RewardsCard> rewardsCards = Arrays.asList(rewardsCustomer3, rewardsCustomer2, rewardsCustomer1);
 
-        // [02 OOP2] Streams terminal operations -count()
+        System.out.println();
+        System.out.println("-------------- Streams Example - Terminal Operations ------------------");
+
+        // [02_OOP2] Streams terminal operations - count()
         getNumberOfRewardCards(rewardsCards);
-        // [02 OOP2] Streams  terminal operations- min() max()
+        // [02_OOP2] Streams  terminal operations- min() max()
         getLowestAndHighestPoints(rewardsCards);
-        // [02 OOP2] Streams terminal operations- forEach()
+        // [02_OOP2] Streams terminal operations- forEach()
         printAllForEachCard(rewardsCards);
-        // [02 OOP2] Streams terminal operations- allMatch(), anyMatch(), noneMatch()
+        // [02_OOP2] Streams terminal operations- allMatch(), anyMatch(), noneMatch()
         checkCardsIfBalancesMatches(rewardsCards, 101);
-        // [02 OOP2] Streams terminal operations- findAny(),findFirst()
+        // [02_OOP2] Streams terminal operations- findAny(),findFirst()
         findAnyName(rewardsCards);
-        // [02 OOP2] Streams terminal operations- collect() - Collectors.toMap(), Collectors.groupingBy() and Collectors.partitioningBy()
+        // [02_OOP2] Streams terminal operations- collect() - Collectors.toMap(), Collectors.groupingBy() and Collectors.partitioningBy()
         collectorsGroupBy(rewardsCards, 222);
 
-        // [03 OOP2] Intermediate Stream Operations
+        System.out.println("-------------- End Of Streams Example - Terminal Operations ------------------");
+        System.out.println();
+
+        System.out.println();
+        System.out.println("-------------- Streams Example - Intermediate Operations ------------------");
+        // [03_OOP2] Streams - Intermediate Operations
         streamTerminalOperations(rewardsCards, 0,100,2);
         streamTerminalOperations(rewardsCards, 1,100,2);
         streamTerminalOperations(rewardsCards, 2,100,2);
         streamTerminalOperations(rewardsCards, 3,100,2);
         streamTerminalOperations(rewardsCards, 4,100,2);
         streamTerminalOperations(rewardsCards, 5,100,2);
+
+        System.out.println("-------------- End Of Streams Example - Terminal Operations ------------------");
+        System.out.println();
 
         // [A3_OOP2] NIO2
         String filePath = LocalDateTime.now()+"-receipt.txt";
@@ -260,8 +294,19 @@ public class Main {
         //  [A1_OOP2] Collections/generics - for example: use of Comparator.comparing() for sorting.
         sortManagerSortByWage();
 
+        //  [A4_OOP2] Localisation.
+        System.out.println();
+        System.out.println("-------------- Localisation Example ------------------");
+        System.out.println("-------------- French ------------------");
+        Locale frenchLocale = new Locale("fr", "FR");
+        showMessagesByLanguage(frenchLocale);
+        System.out.println("-------------- English ------------------");
+        Locale englishLocale = new Locale("en", "EN");
+        showMessagesByLanguage(englishLocale);
+        System.out.println("-------------- Localisation Example End ------------------");
+        System.out.println();
     }
-    // [03 OOP2] Intermediate Stream Operations
+    // [03_OOP2] Intermediate Stream Operations
     private static void streamTerminalOperations(List<RewardsCard> rewardsCards, int option, int amount, int limit) {
 
         switch (option) {
@@ -270,7 +315,6 @@ public class Main {
                 List<RewardsCard> filteredCards = rewardsCards.stream()
                         .filter(card -> card.getRewardPoints() > amount)
                         .toList();
-                System.out.println("-------- ----------- ---------- ---");
                 System.out.println("Filtered Cards (Reward Points > "+amount+"):");
                 filteredCards.forEach(card -> System.out.println(card.getName() + " " + card.getRewardPoints()));
                 break;
@@ -373,7 +417,7 @@ public class Main {
     // [02 OOP2] Streams - min() max()
     private static void getNumberOfRewardCards(List<RewardsCard> rewardsCards) {
         // count() - Count the number of RewardsCards
-        long count = rewardsCards.stream().count();
+        long count = rewardsCards.size();
         System.out.println("Total Rewards Cards: " + count);
     }
     // [02 OOP2] Streams - min() max()
@@ -429,7 +473,6 @@ public class Main {
     // [A2_OOP2] Concurrency e.g. using ExecutorService to process a list of Callables.
     private static void processContractorConcurrently() {
         ExecutorService executorService = Executors.newFixedThreadPool(3);
-        List<Callable<String>> contractorTasks = new ArrayList<>();
 
         List<Contractor> contractor = List.of(
                 new Contractor(1, "Alan Brown", "Electrician", 500, "Fix Lighting"),
@@ -437,7 +480,7 @@ public class Main {
                 new Contractor(3, "Alan Brown", "Plumber", 300, "Fix Sink")
         );
 
-        contractorTasks.addAll(contractor);
+        List<Callable<String>> contractorTasks = new ArrayList<>(contractor);
 
         try {
             List<Future<String>> results = executorService.invokeAll(contractorTasks);
@@ -454,29 +497,34 @@ public class Main {
     //[A1_OOP2] Collections/generics - for example: use of Comparator.comparing() for sorting.
     private static void sortManagerSortByWage() {
         List<Manager> employees = new ArrayList<>(List.of(
-                new Manager(500, "Alan Brown", 10, "Manager"),
+                new Manager(500, "Alan murohy", 10, "Manager"),
                 new Manager(350, "joe bloggs", 30, "Supervisor"),
-                new Manager(450, "Alan Brown", 15, "Assist Manager")
+                new Manager(750, "Alan Brown", 15, "Assist Manager")
         ));
         employees.sort(Comparator.comparing(Manager::getWage));
-        System.out.println("\nSorted Manager by Name:");
-        employees.forEach(employee -> System.out.println(employee.getName()));
+        System.out.println("\n-------- Sorted Manager by Wage (using Comparator.comparing() ):");
+        employees.forEach(employee -> System.out.println(employee.getName() +" is paid " + employee.getWage()));
     }
 
+    private static void showMessagesByLanguage(Locale lang) {
+        ResourceBundle messages = ResourceBundle.getBundle("classes.Language", lang);
 
+        String goodbye = messages.getString("goodbye");
+        String farewell = messages.getString("farewell");
+
+        System.out.println("Greeting ->" + goodbye);
+        System.out.println("Farewell ->" + farewell);
+    }
     //[04_OOP2] Switch expressions with pattern matching.
     private static boolean setOffersAvailable(String weekday){
+        System.out.println();
+        System.out.println("----- Switch expressions with pattern matching example ------ ");
+        System.out.println("Day Of Week is -> "+weekday);
 
-        System.out.println("week Day is -> "+weekday);
-
-        switch (weekday) {
-            case "THURSDAY", "SATURDAY" -> {
-                return true;
-            }
-            default -> {
-                return false;
-            }
-        }
+        return switch (weekday) {
+            case String s when s.equals("THURSDAY") || s.equals("SATURDAY") -> true;
+            default -> false;
+        };
     }
 
     // [A6] Switch expressions and pattern matching.
